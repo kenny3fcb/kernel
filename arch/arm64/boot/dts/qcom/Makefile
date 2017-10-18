@@ -596,6 +596,10 @@ dtb-$(CONFIG_MACH_SONY_BLANC)		+= msm8956-v1.1-loire-blanc_generic.dtb
 dtb-$(CONFIG_MACH_SONY_BLANC)		+= apq8056-v1.1-loire-blanc_windy.dtb
 dtb-$(CONFIG_MACH_SONY_BLANC)		+= msm8956-loire-blanc_generic.dtb
 dtb-$(CONFIG_MACH_SONY_BLANC)		+= apq8056-loire-blanc_windy.dtb
+
+# ZUK MSM8996
+dtb-$(CONFIG_MACH_ZUK_Z2_PLUS) += msm8996-v3-pmi8996-mtp-z2_plus.dtb
+dtb-$(CONFIG_MACH_ZUK_Z2_ROW) += msm8996-v3-pmi8996-mtp-z2_row.dtb
 endif
 endif
 
