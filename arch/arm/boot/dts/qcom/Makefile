@@ -1,3 +1,9 @@
+ifeq ($(CONFIG_MACH_ZUK_Z2_PLUS),y)
+dtb-$(CONFIG_ARCH_MSM8996) += msm8996-v3-pmi8996-mtp-z2_plus.dtb
+else ifeq ($(CONFIG_MACH_ZUK_Z2_ROW),y)
+dtb-$(CONFIG_ARCH_MSM8996) += msm8996-v3-pmi8996-mtp-z2_row.dtb
+endif
+
 # MSM8998
 dtb-$(CONFIG_MACH_SONY_LILAC) += msm8998-v2-yoshino-lilac_generic.dtb
 dtb-$(CONFIG_MACH_SONY_LILAC) += msm8998-v2.1-yoshino-lilac_generic.dtb
