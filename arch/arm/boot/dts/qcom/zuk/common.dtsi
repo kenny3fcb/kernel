@@ -18,7 +18,31 @@
 		/delete-property/ i2c12;
 		/delete-property/ spi12;
 	};
-	/delete-node/ firmware;
+
+	firmware: firmware {
+		android {
+			compatible = "android,firmware";
+			fstab {
+				compatible = "android,fstab";
+				vendor {
+					compatible = "android,vendor";
+					dev = "/dev/block/platform/soc/7464900.sdhci/by-name/vendor";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait";
+					status = "ok";
+				 };
+				 system {
+					compatible = "android,system";
+					dev = "/dev/block/platform/soc/7464900.sdhci/by-name/system";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait";
+					status = "ok";
+				};
+			};
+		};
+	};
 };
 
 &soc {
