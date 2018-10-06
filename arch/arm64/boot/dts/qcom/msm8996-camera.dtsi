@@ -28,24 +28,18 @@
 		reg-names = "csiphy", "csiphy_clk_mux";
 		interrupts = <0 78 0>;
 		interrupt-names = "csiphy";
-		qcom,csi-vdd-voltage = <1250000>;
-		qcom,mipi-csi-vdd-supply = <&pm8994_l2>;
-		mmagic-supply = <&gdsc_mmagic_camss>;
-		gdscr-supply = <&gdsc_camss_top>;
-		qcom,cam-vreg-name = "mmagic", "gdscr";
-		clocks = <&clock_mmss MMSS_MMAGIC_AHB_CLK>,
-			<&clock_mmss CAMSS_TOP_AHB_CLK>,
+		clocks = <&clock_mmss CAMSS_TOP_AHB_CLK>,
 			<&clock_mmss CAMSS_ISPIF_AHB_CLK>,
 			<&clock_mmss CSI0PHYTIMER_CLK_SRC>,
 			<&clock_mmss CAMSS_CSI0PHYTIMER_CLK>,
 			<&clock_mmss CAMSS_AHB_CLK>,
 			<&clock_mmss CSIPHY0_3P_CLK_SRC>,
 			<&clock_mmss CAMSS_CSIPHY0_3P_CLK>;
-		clock-names = "mmagic_ahb_clk", "camss_top_ahb_clk",
+		clock-names = "camss_top_ahb_clk",
 			"ispif_ahb_clk", "csiphy_timer_src_clk",
 			"csiphy_timer_clk", "camss_ahb_clk",
 			"csiphy_3p_clk_src", "csi_phy_3p_clk";
-		qcom,clock-rates = <0 0 0 200000000 0 0 100000000 0>;
+		qcom,clock-rates = <0 0 200000000 0 0 100000000 0>;
 	};
 
 	qcom,csiphy@a35000 {
@@ -55,24 +49,18 @@
 		reg-names = "csiphy", "csiphy_clk_mux";
 		interrupts = <0 79 0>;
 		interrupt-names = "csiphy";
-		qcom,csi-vdd-voltage = <1250000>;
-		qcom,mipi-csi-vdd-supply = <&pm8994_l2>;
-		mmagic-supply = <&gdsc_mmagic_camss>;
-		gdscr-supply = <&gdsc_camss_top>;
-		qcom,cam-vreg-name = "mmagic", "gdscr";
-		clocks = <&clock_mmss MMSS_MMAGIC_AHB_CLK>,
-			<&clock_mmss CAMSS_TOP_AHB_CLK>,
+		clocks = <&clock_mmss CAMSS_TOP_AHB_CLK>,
 			<&clock_mmss CAMSS_ISPIF_AHB_CLK>,
 			<&clock_mmss CSI1PHYTIMER_CLK_SRC>,
 			<&clock_mmss CAMSS_CSI1PHYTIMER_CLK>,
 			<&clock_mmss CAMSS_AHB_CLK>,
 			<&clock_mmss CSIPHY1_3P_CLK_SRC>,
 			<&clock_mmss CAMSS_CSIPHY1_3P_CLK>;
-		clock-names = "mmagic_ahb_clk", "camss_top_ahb_clk",
+		clock-names = "camss_top_ahb_clk",
 			"ispif_ahb_clk", "csiphy_timer_src_clk",
 			"csiphy_timer_clk", "camss_ahb_clk",
 			"csiphy_3p_clk_src", "csi_phy_3p_clk";
-		qcom,clock-rates = <0 0 0 200000000 0 0 100000000 0>;
+		qcom,clock-rates = <0 0 200000000 0 0 100000000 0>;
 	};
 
 	qcom,csiphy@a36000 {
@@ -82,24 +70,18 @@
 		reg-names = "csiphy", "csiphy_clk_mux";
 		interrupts = <0 80 0>;
 		interrupt-names = "csiphy";
-		qcom,csi-vdd-voltage = <1250000>;
-		qcom,mipi-csi-vdd-supply = <&pm8994_l2>;
-		mmagic-supply = <&gdsc_mmagic_camss>;
-		gdscr-supply = <&gdsc_camss_top>;
-		qcom,cam-vreg-name = "mmagic", "gdscr";
-		clocks = <&clock_mmss MMSS_MMAGIC_AHB_CLK>,
-			<&clock_mmss CAMSS_TOP_AHB_CLK>,
+		clocks = <&clock_mmss CAMSS_TOP_AHB_CLK>,
 			<&clock_mmss CAMSS_ISPIF_AHB_CLK>,
 			<&clock_mmss CSI2PHYTIMER_CLK_SRC>,
 			<&clock_mmss CAMSS_CSI2PHYTIMER_CLK>,
 			<&clock_mmss CAMSS_AHB_CLK>,
 			<&clock_mmss CSIPHY2_3P_CLK_SRC>,
 			<&clock_mmss CAMSS_CSIPHY2_3P_CLK>;
-		clock-names = "mmagic_ahb_clk", "camss_top_ahb_clk",
+		clock-names = "camss_top_ahb_clk",
 			"ispif_ahb_clk", "csiphy_timer_src_clk",
 			"csiphy_timer_clk", "camss_ahb_clk",
 			"csiphy_3p_clk_src", "csi_phy_3p_clk";
-		qcom,clock-rates = <0 0 0 200000000 0 0 100000000 0>;
+		qcom,clock-rates = <0 0 200000000 0 0 100000000 0>;
 	};
 
 	qcom,csid@a30000  {
