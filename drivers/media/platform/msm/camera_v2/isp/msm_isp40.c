@@ -145,7 +145,7 @@ static int32_t msm_vfe40_init_qos_parms(struct vfe_device *vfe_dev,
 	void __iomem *vfebase = vfe_dev->vfe_base;
 	struct device_node *of_node;
 	uint32_t *ds_settings = NULL, *ds_regs = NULL, ds_entries = 0;
-	int32_t i = 0 , rc = 0;
+	int32_t i = 0, rc = 0;
 	uint32_t *qos_settings = NULL, *qos_regs = NULL, qos_entries = 0;
 	of_node = vfe_dev->pdev->dev.of_node;
 
@@ -230,12 +230,12 @@ static int32_t msm_vfe40_init_qos_parms(struct vfe_device *vfe_dev,
 						__func__);
 					kfree(ds_settings);
 					kfree(ds_regs);
-				} else {
+	} else {
 					for (i = 0; i < ds_entries; i++)
 						msm_camera_io_w(ds_settings[i],
 							vfebase + ds_regs[i]);
-					kfree(ds_regs);
-					kfree(ds_settings);
+						kfree(ds_regs);
+						kfree(ds_settings);
 				}
 			} else {
 				kfree(ds_regs);
@@ -251,7 +251,7 @@ static int32_t msm_vfe40_init_vbif_parms(struct vfe_device *vfe_dev,
 {
 	void __iomem *vfe_vbif_base = vfe_dev->vfe_vbif_base;
 	struct device_node *of_node;
-	int32_t i = 0 , rc = 0;
+	int32_t i = 0, rc = 0;
 	uint32_t *vbif_settings = NULL, *vbif_regs = NULL, vbif_entries = 0;
 	of_node = vfe_dev->pdev->dev.of_node;
 
@@ -586,11 +586,6 @@ static void msm_vfe40_read_and_clear_irq_status(struct vfe_device *vfe_dev,
 
 	*irq_status0 &= vfe_dev->irq0_mask;
 	*irq_status1 &= vfe_dev->irq1_mask;
-	if (*irq_status0 &&
-		(*irq_status0 == msm_camera_io_r(vfe_dev->vfe_base + 0x38))) {
-		msm_camera_io_w(*irq_status0, vfe_dev->vfe_base + 0x30);
-		msm_camera_io_w_mb(1, vfe_dev->vfe_base + 0x24);
-	}
 
 	if (*irq_status1 & (1 << 0)) {
 		vfe_dev->error_info.camif_status =
@@ -1056,18 +1051,15 @@ static int msm_vfe40_start_fetch_engine(struct vfe_device *vfe_dev,
 				fe_cfg->stream_id);
 		vfe_dev->fetch_engine_info.bufq_handle = bufq_handle;
 
-		mutex_lock(&vfe_dev->buf_mgr->lock);
 		rc = vfe_dev->buf_mgr->ops->get_buf_by_index(
 			vfe_dev->buf_mgr, bufq_handle, fe_cfg->buf_idx, &buf);
 		if (rc < 0 || !buf) {
 			pr_err("%s: No fetch buffer rc= %d buf= %pK\n",
 				__func__, rc, buf);
-			mutex_unlock(&vfe_dev->buf_mgr->lock);
 			return -EINVAL;
 		}
 		mapped_info = buf->mapped_info[0];
 		buf->state = MSM_ISP_BUFFER_STATE_DISPATCHED;
-		mutex_unlock(&vfe_dev->buf_mgr->lock);
 	} else {
 		rc = vfe_dev->buf_mgr->ops->map_buf(vfe_dev->buf_mgr,
 			&mapped_info, fe_cfg->fd);
@@ -1120,15 +1112,14 @@ static int msm_vfe40_start_fetch_engine_multi_pass(struct vfe_device *vfe_dev,
 		mutex_lock(&vfe_dev->buf_mgr->lock);
 		rc = vfe_dev->buf_mgr->ops->get_buf_by_index(
 			vfe_dev->buf_mgr, bufq_handle, fe_cfg->buf_idx, &buf);
+		mutex_unlock(&vfe_dev->buf_mgr->lock);
 		if (rc < 0 || !buf) {
 			pr_err("%s: No fetch buffer rc= %d buf= %pK\n",
 				__func__, rc, buf);
-			mutex_unlock(&vfe_dev->buf_mgr->lock);
 			return -EINVAL;
 		}
 		mapped_info = buf->mapped_info[0];
 		buf->state = MSM_ISP_BUFFER_STATE_DISPATCHED;
-		mutex_unlock(&vfe_dev->buf_mgr->lock);
 	} else {
 		rc = vfe_dev->buf_mgr->ops->map_buf(vfe_dev->buf_mgr,
 			&mapped_info, fe_cfg->fd);
@@ -1343,7 +1334,6 @@ static void msm_vfe40_cfg_camif(struct vfe_device *vfe_dev,
 	struct msm_vfe_pix_cfg *pix_cfg)
 {
 	uint16_t first_pixel, last_pixel, first_line, last_line;
-	uint16_t epoch_line1;
 	struct msm_vfe_camif_cfg *camif_cfg = &pix_cfg->camif_cfg;
 	uint32_t val, subsample_period, subsample_pattern;
 	struct msm_vfe_camif_subsample_cfg *subsample_cfg =
@@ -1359,14 +1349,6 @@ static void msm_vfe40_cfg_camif(struct vfe_device *vfe_dev,
 	last_pixel = camif_cfg->last_pixel;
 	first_line = camif_cfg->first_line;
 	last_line = camif_cfg->last_line;
-	epoch_line1 = camif_cfg->epoch_line1;
-
-	if ((epoch_line1 <= 0) || (epoch_line1 > last_line))
-		epoch_line1 = last_line - 50;
-
-	if ((last_line - epoch_line1) > 100)
-		epoch_line1 = last_line - 100;
-
 	subsample_period = camif_cfg->subsample_cfg.irq_subsample_period;
 	subsample_pattern = camif_cfg->subsample_cfg.irq_subsample_pattern;
 
@@ -1378,14 +1360,6 @@ static void msm_vfe40_cfg_camif(struct vfe_device *vfe_dev,
 
 	msm_camera_io_w(first_line << 16 | last_line,
 	vfe_dev->vfe_base + 0x308);
-
-	/*configure EPOCH0: 20 lines, and
-	* configure EPOCH1: epoch_line1 before EOF
-	*/
-	msm_camera_io_w_mb(0x140000 | epoch_line1,
-		vfe_dev->vfe_base + 0x318);
-	pr_debug("%s:%d: epoch_line1: %d\n",
-		__func__, __LINE__, epoch_line1);
 	if (subsample_period && subsample_pattern) {
 		val = msm_camera_io_r(vfe_dev->vfe_base + 0x2F8);
 		val &= 0xFFE0FFFF;
@@ -1507,8 +1481,9 @@ static void msm_vfe40_update_camif_state(struct vfe_device *vfe_dev,
 		msm_camera_io_w(0x0, vfe_dev->vfe_base + 0x30);
 		msm_camera_io_w_mb(0x81, vfe_dev->vfe_base + 0x34);
 		msm_camera_io_w_mb(0x1, vfe_dev->vfe_base + 0x24);
-		msm_vfe40_config_irq(vfe_dev, 0xFF, 0x81,
+		msm_vfe40_config_irq(vfe_dev, 0xF7, 0x81,
 				MSM_ISP_IRQ_ENABLE);
+		msm_camera_io_w_mb(0x140000, vfe_dev->vfe_base + 0x318);
 
 		bus_en =
 			((vfe_dev->axi_data.
@@ -2215,7 +2190,7 @@ static struct msm_vfe_axi_hardware_info msm_vfe40_axi_hw_info = {
 	.num_comp_mask = 3,
 	.num_rdi = 3,
 	.num_rdi_master = 3,
-	.min_wm_ub = 96,
+	.min_wm_ub = 64,
 	.scratch_buf_range = SZ_32M + SZ_4M,
 };
 
