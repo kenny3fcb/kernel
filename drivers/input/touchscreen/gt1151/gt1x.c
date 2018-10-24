@@ -37,6 +37,7 @@ struct regulator *gt1x_supply;
 static atomic_t gt_device_count;
 #endif
 
+static struct pm_qos_request pm_qos_req;
 static int gt1x_register_powermanger(void);
 static int gt1x_unregister_powermanger(void);
 static irqreturn_t gt1x_ts_irq_handler(int irq, void *dev_id);
@@ -308,7 +309,10 @@ static void gt1x_ts_work_func(struct work_struct *work)
 #if GTP_WITH_STYLUS
 	ret = gt1x_touch_event_handler(point_data, input_dev, pen_dev);
 #else
+	/* prevent CPU from entering deep sleep */
+	pm_qos_update_request(&pm_qos_req, 100);
 	ret = gt1x_touch_event_handler(point_data, input_dev, NULL);
+	pm_qos_update_request(&pm_qos_req, PM_QOS_DEFAULT_VALUE);
 #endif
 
 exit_work_func:
@@ -595,6 +599,9 @@ static int gt1x_ts_probe(struct i2c_client *client, const struct i2c_device_id *
 		struct pinctrl *pinctrl_irq;
 		struct pinctrl_state *pinctrl_active;
 
+	pm_qos_add_request(&pm_qos_req, PM_QOS_CPU_DMA_LATENCY,
+			PM_QOS_DEFAULT_VALUE);
+
 	//do NOT remove these logs
 	GTP_INFO("GTP Driver Version: %s", GTP_DRIVER_VERSION);
 	GTP_INFO("GTP I2C Address: 0x%02x", client->addr);
@@ -709,6 +716,7 @@ static int gt1x_ts_remove(struct i2c_client *client)
 {
 	GTP_DEBUG_FUNC();
 	GTP_INFO("GTP driver removing...");
+	pm_qos_remove_request(&pm_qos_req);
 	gt1x_unregister_powermanger();
 
 #if GTP_GESTURE_WAKEUP

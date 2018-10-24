@@ -32,6 +32,7 @@
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
 #endif
+#include <linux/pm_qos.h>
 
 #define IIC_MAX_TRANSFER_SIZE       250
 
