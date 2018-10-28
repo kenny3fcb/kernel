@@ -47,7 +47,6 @@
 #include <linux/kthread.h>
 #include <linux/dma-buf.h>
 #include <linux/mdss_io_util.h>
-#include <linux/wakelock.h>
 
 #include "mdss_dsi.h"
 #include "mdss_fb.h"
@@ -153,7 +152,7 @@ static inline uint64_t __user to_user_u64(void *ptr)
 static struct fb_info *prim_fbi;
 static struct delayed_work prim_panel_work;
 static atomic_t prim_panel_is_on;
-static struct wake_lock prim_panel_wakelock;
+static struct wakeup_source prim_panel_wakelock;
 static void prim_panel_off_delayed_work(struct work_struct *work)
 {
 #ifdef CONFIG_FRAMEBUFFER_CONSOLE
@@ -169,7 +168,7 @@ static void prim_panel_off_delayed_work(struct work_struct *work)
 	if (atomic_read(&prim_panel_is_on)) {
 		fb_blank(prim_fbi, FB_BLANK_POWERDOWN);
 		atomic_set(&prim_panel_is_on, false);
-		wake_unlock(&prim_panel_wakelock);
+		__pm_relax(&prim_panel_wakelock);
 	}
 
 	unlock_fb_info(prim_fbi);
@@ -2335,7 +2334,7 @@ static int mdss_fb_remove(struct platform_device *pdev)
 	if (mfd->panel_info && mfd->panel_info->is_prim_panel) {
 		atomic_set(&prim_panel_is_on, false);
 		cancel_delayed_work_sync(&prim_panel_work);
-		wake_lock_destroy(&prim_panel_wakelock);
+		wakeup_source_trash(&prim_panel_wakelock);
 	}
 	mdss_fb_remove_sysfs(mfd);
 
@@ -3164,7 +3163,7 @@ static int mdss_fb_blank(int blank_mode, struct fb_info *info)
 	if ((info == prim_fbi) && (blank_mode == FB_BLANK_UNBLANK) &&
 		atomic_read(&prim_panel_is_on)) {
 		atomic_set(&prim_panel_is_on, false);
-		wake_unlock(&prim_panel_wakelock);
+		__pm_relax(&prim_panel_wakelock);
 		cancel_delayed_work_sync(&prim_panel_work);
 		return 0;
 	}
@@ -3849,7 +3848,7 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 		prim_fbi = fbi;
 		atomic_set(&prim_panel_is_on, false);
 		INIT_DELAYED_WORK(&prim_panel_work, prim_panel_off_delayed_work);
-		wake_lock_init(&prim_panel_wakelock, WAKE_LOCK_SUSPEND, "prim_panel_wakelock");
+		wakeup_source_init(&prim_panel_wakelock, "prim_panel_wakelock");
 	}
 	return 0;
 }
@@ -6444,7 +6443,7 @@ int mdss_prim_panel_fb_unblank(int timeout)
 			return 0;
 		}
 		printk("prim_fbi 09\n");
-		wake_lock(&prim_panel_wakelock);
+		__pm_stay_awake(&prim_panel_wakelock);
 		printk("fb_blank 01\n");
 		ret = fb_blank(prim_fbi, FB_BLANK_UNBLANK);
 		if (!ret) {
@@ -6452,9 +6451,9 @@ int mdss_prim_panel_fb_unblank(int timeout)
 			if (timeout > 0)
 				schedule_delayed_work(&prim_panel_work, msecs_to_jiffies(timeout));
 			else
-				wake_unlock(&prim_panel_wakelock);
+				__pm_relax(&prim_panel_wakelock);
 		} else
-			wake_unlock(&prim_panel_wakelock);
+			__pm_relax(&prim_panel_wakelock);
 		unlock_fb_info(prim_fbi);
 #ifdef CONFIG_FRAMEBUFFER_CONSOLE
 		printk("prim_fbi 10\n");
