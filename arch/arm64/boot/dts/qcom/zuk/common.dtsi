@@ -110,6 +110,14 @@
 		qcom,vph-low-threshold-uv = <3000000>;
 		qcom,soc-low-threshold = <0>;
 	};
+	
+	smp2pgpio_rdbg_5_out: qcom,smp2pgpio-rdbg-5-out {
+		status = "disabled";
+	};
+	
+	smp2pgpio_rdbg_5_in: qcom,smp2pgpio-rdbg-5-in {
+		status = "disabled";
+	};
 };
 
 &wdog {
