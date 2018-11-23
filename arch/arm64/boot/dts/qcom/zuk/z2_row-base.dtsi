@@ -34,8 +34,8 @@
 		qcom,clk-freq-out = <400000>;
 		qcom,clk-freq-in  = <19200000>;
 		clock-names = "iface_clk", "core_clk";
-		clocks = <&clock_gcc clk_gcc_blsp1_ahb_clk>,
-			<&clock_gcc clk_gcc_blsp1_qup5_i2c_apps_clk>;//
+		clocks = <&clock_gcc GCC_BLSP1_AHB_CLK>,
+			<&clock_gcc GCC_BLSP1_QUP5_I2C_APPS_CLK>;//
 		pinctrl-names = "i2c_active", "i2c_sleep";
 		pinctrl-0 = <&i2c_5_active>;
 		pinctrl-1 = <&i2c_5_sleep>;
@@ -196,7 +196,7 @@
 	};
 };
 
-&pmi8994_fg {
+&qpnp_fg {
 	qcom,fg-iterm-ma = <125>;
 };
 
@@ -217,7 +217,7 @@
 	qcom,qpnp-lab-init-lcd-voltage = <5500000>;
 };
 
-&pmi8994_charger {
+&qpnp_smbcharger {
 	qcom,fastchg-current-ma = <2400>;
 };
 
