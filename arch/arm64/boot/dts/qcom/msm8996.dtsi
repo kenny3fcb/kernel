@@ -24,10 +24,6 @@
 	qcom,msm-name = "MSM8996";
 	interrupt-parent = <&wakegic>;
 
-	chosen {
-		bootargs = "fpsimd.fpsimd_settings=1 app_setting.use_app_setting=1 app_setting.use_32bit_app_setting=1";
-	};
-
 	aliases {
 		sdhc1 = &sdhc_1; /* SDC1 eMMC slot */
 		sdhc2 = &sdhc_2; /* SDC2 SD card slot */
@@ -49,7 +45,7 @@
 
 	chosen {
 		stdout-path = "serial0";
-		bootargs = "rcupdate.rcu_expedited=1";
+		bootargs = "fpsimd.fpsimd_settings=1 app_setting.use_app_setting=1 app_setting.use_32bit_app_setting=1 rcupdate.rcu_expedited=1";
 	};
 
 	psci {
