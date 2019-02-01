@@ -4034,7 +4034,7 @@ static int qpnp_leds_probe(struct platform_device *pdev)
 	if (!led_array)
 		return -ENOMEM;
 
-	if (of_property_read_bool(node, "qcom,rgb_sync")) {
+	if (of_property_read_bool(node, "qcom,rgb-sync")) {
 		rgb_sync = devm_kzalloc(&pdev->dev,
 			sizeof(struct rgb_sync), GFP_KERNEL);
 		if (!rgb_sync) {
