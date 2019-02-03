@@ -32,8 +32,8 @@
 		qcom,gpio-req-tbl-label = "CAMIF_MCLK2",
 					"CAM_RESET2",
 					"CAM_STANDBY2";
-		clocks = <&clock_mmss MCLK2_CLK_SRC>,
-			<&clock_mmss CAMSS_MCLK2_CLK>;
+		clocks = <&clock_mmss clk_mclk2_clk_src>,
+			<&clock_mmss clk_camss_mclk2_clk>;
 		clock-names = "cam_src_clk", "cam_clk";
 	};
 	
@@ -72,8 +72,8 @@
 		qcom,sensor-mode = <0>;
 		qcom,cci-master = <1>;
 		status = "ok";
-		clocks = <&clock_mmss MCLK2_CLK_SRC>,
-			<&clock_mmss CAMSS_MCLK2_CLK>;
+		clocks = <&clock_mmss clk_mclk2_clk_src>,
+			<&clock_mmss clk_camss_mclk2_clk>;
 		clock-names = "cam_src_clk", "cam_clk";
 	};
 };
