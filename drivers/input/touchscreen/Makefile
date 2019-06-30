@@ -113,3 +113,9 @@ obj-$(CONFIG_TOUCHSCREEN_SIW)		+= siw/
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_TCM)	+= synaptics_tcm/
 obj-$(CONFIG_TOUCHSCREEN_HIMAX_CHIPSET)	+= hxchipset/
 obj-$(CONFIG_TOUCHSCREEN_NT36672)	+= nt36672a/
+obj-$(CONFIG_TOUCHSCREEN_NVT_D2S) 	+= nvt_touch_d2s/
+obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_E7S)	+= synaptics_dsx_e7s/
+obj-$(CONFIG_TOUCHSCREEN_NVT_E7S) 	+= nvt_touch_e7s/
+
+obj-$(CONFIG_MACH_XIAOMI_SDM660)	+= lct_tp_fm_info.o lct_ctp_selftest.o lct_ctp_upgrade.o lct_if_ctp_upgrade.o
+obj-$(CONFIG_MACH_XIAOMI_WHYRED)	+= lct_tp_gesture.o
