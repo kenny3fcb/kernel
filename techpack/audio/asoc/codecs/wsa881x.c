@@ -109,9 +109,7 @@ struct wsa881x_priv {
 	int version;
 	struct mutex bg_lock;
 	struct mutex res_lock;
-#ifdef WSA_TARGET_SOMC
 	struct mutex temp_lock;
-#endif
 	struct snd_info_entry *entry;
 	struct snd_info_entry *version_entry;
 	int state;
