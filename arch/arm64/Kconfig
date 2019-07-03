@@ -1381,3 +1381,32 @@ endif
 source "lib/Kconfig"
 
 source "techpack/Kconfig"
+
+# Xiaomi configuration options
+
+config MACH_XIAOMI
+	bool "Xiaomi device"
+	depends on ARCH_QCOM
+	help
+	  Support for Xiaomi products
+
+config MACH_XIAOMI_SDM660
+	bool "Xiaomi SDM660"
+	depends on MACH_XIAOMI
+	help
+	  Support for SDM660 Xiaomi variants
+
+menu "Xiaomi board selection"
+
+	config MACH_XIAOMI_WAYNE
+		bool "Xiaomi Wayne board"
+		depends on MACH_XIAOMI_SDM660
+		help
+		  Support for Xiaomi MI 6X
+
+	config MACH_XIAOMI_WHYRED
+		bool "Xiaomi Whyred board"
+		depends on MACH_XIAOMI_SDM660
+		help
+		  Support for Xiaomi Redmi Note 5
+endmenu

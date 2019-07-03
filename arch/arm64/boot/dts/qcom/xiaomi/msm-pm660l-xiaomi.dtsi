@@ -1,0 +1,59 @@
+&red_led {
+	qcom,ramp-step-ms = <128>;
+	qcom,idx-len = <26>;
+	qcom,duty-pcts =
+		[3C 3C 3B 3A 3B 37 35 33 31 2E 2A 27 23
+		1F 1B 17 13 0E 09 05 00 00 00 00 00 00];
+};
+
+&pm660l_wled {
+	qcom,fs-curr-ua = <20000>;
+	qcom,en-cabc;
+	/delete-property/ qcom,auto-calibration-enable;
+};
+
+&pm660l_flash0 {
+	qcom,current-ma = <900>;
+};
+
+&pm660l_flash1 {
+	qcom,current-ma = <900>;
+};
+
+&pm660l_flash2 {
+	qcom,max-current = <100>;
+	qcom,current-ma = <90>;
+};
+
+&pm660l_torch0 {
+	qcom,max-current = <1000>;
+	qcom,current-ma = <100>;
+};
+
+&pm660l_torch1 {
+	qcom,max-current = <1000>;
+	qcom,current-ma = <100>;
+};
+
+&pm660l_torch2 {
+	qcom,max-current = <150>;
+	qcom,current-ma = <90>;
+};
+
+&flash_led {
+	qcom,flashlight_0 {
+		label = "flashlight";
+		qcom,led-name = "flashlight";
+		qcom,torch-name = "led:torch_0", "led:torch_1";
+		qcom,switch-name = "led:switch_0";
+		qcom,id = <0>;
+	};
+};
+
+&lcdb_ldo_vreg {
+	qcom,ldo-ilim-ma = <260>;
+};
+
+&lcdb_ncp_vreg {
+	qcom,ncp-ilim-ma = <260>;
+};

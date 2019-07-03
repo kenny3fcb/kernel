@@ -1,0 +1,32 @@
+&pm660_charger {
+	qcom,micro-usb;
+	qcom,usb-icl-ua = <2000000>;
+	qcom,dc-icl-ua = <2000000>;
+	qcom,fcc-max-ua = <2500000>;
+
+	qcom,thermal-mitigation
+			= <2500000 2300000 2000000 1500000 1000000 400000 200000>;
+	qcom,thermal-mitigation-china
+			= <2500000 2300000 2000000 1500000 1000000 400000 200000>;
+};
+
+&pm660_pdphy {
+	status = "disabled";
+};
+
+&pm660_fg {
+	qcom,fg-recharge-voltage = <4320>;
+};
+
+&pm660_haptics {
+	qcom,actuator-type = "erm";
+	qcom,play-mode = "direct";
+	qcom,vmax-mv = <3000>;
+	qcom,wave-shape = "square";
+	qcom,wave-play-rate-us = <6667>;
+	qcom,int-pwm-freq-khz = <505>;
+	qcom,brake-pattern = [03 03 00 00];
+	qcom,lra-high-z = "opt0";
+	qcom,lra-auto-res-mode = "qwd";
+	qcom,correct-lra-drive-freq;
+};

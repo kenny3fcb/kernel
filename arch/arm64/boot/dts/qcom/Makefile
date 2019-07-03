@@ -595,6 +595,9 @@ dtb-$(CONFIG_MACH_SONY_VOYAGER)		+= sdm630-nile-voyager.dtb
 dtb-$(CONFIG_MACH_SONY_KIRIN)		+= sdm630-ganges-kirin.dtb
 dtb-$(CONFIG_MACH_SONY_MERMAID)		+= sdm636-ganges-mermaid.dtb
 
+dtb-$(CONFIG_MACH_XIAOMI_WAYNE)		+= sdm660-mtp-wayne.dtb
+dtb-$(CONFIG_MACH_XIAOMI_WHYRED)	+= sdm636-mtp-whyred.dtb
+
 # MSM8956
 dtb-$(CONFIG_MACH_SONY_SUZU)		+= msm8956-v1.1-loire-suzu_generic.dtb
 dtb-$(CONFIG_MACH_SONY_KUGO)		+= msm8956-v1.1-loire-kugo_generic.dtb

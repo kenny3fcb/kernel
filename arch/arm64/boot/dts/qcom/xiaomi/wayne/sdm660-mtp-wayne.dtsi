@@ -1,0 +1,24 @@
+&mtp_batterydata {
+	#include "fg-gen3-batterydata-l8866cos-3000mah.dtsi"
+	#include "fg-gen3-batterydata-l8866default-3000mah.dtsi"
+	#include "fg-gen3-batterydata-l8866sun-3000mah.dtsi"
+};
+
+&mdss_dsi0 {
+	qcom,dsi-pref-prim-pan = <&dsi_nt36672_tianma_fhd_video>;
+};
+
+&dsi_nt36672_tianma_fhd_video {
+	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+	qcom,mdss-dsi-bl-min-level = <1>;
+	qcom,mdss-dsi-bl-max-level = <4095>;
+	qcom,mdss-brightness-max-level = <4095>;
+	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
+};
+
+&dsi_nt36672_jdi_fhd_video {
+	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+	qcom,mdss-dsi-bl-min-level = <1>;
+	qcom,mdss-dsi-bl-max-level = <4095>;
+	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
+};
