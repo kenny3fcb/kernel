@@ -19,13 +19,13 @@
 };
 
 &pm660_haptics {
-	qcom,actuator-type = "erm";
+	qcom,actuator-type = <1>;
 	qcom,play-mode = "direct";
 	qcom,vmax-mv = <3000>;
 	qcom,wave-shape = "square";
 	qcom,wave-play-rate-us = <6667>;
 	qcom,int-pwm-freq-khz = <505>;
-	qcom,brake-pattern = [03 03 00 00];
+	qcom,brake-pattern = <0x3 0x3 0x0 0x0>;
 	qcom,lra-high-z = "opt0";
 	qcom,lra-auto-res-mode = "qwd";
 	qcom,correct-lra-drive-freq;
